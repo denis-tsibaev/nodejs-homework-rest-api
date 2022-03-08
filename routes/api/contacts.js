@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const contactModel = require("../../models/contact");
+// contactModel некая модель с методами
 const schemaCreateContact = require("./contacts-validation-schemes");
 const validateBody = require("../../middlewares/validation");
 
