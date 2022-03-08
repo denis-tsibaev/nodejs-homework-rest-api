@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
-
-const contactsOperations = require("../../models/contacts");
+const contactModel = require("../../models/contact");
+const schemaCreateContact = require("./contacts-validation-schemes");
+const validateBody = require("../../middlewares/validation");
 
 router.get("/", async (req, res, next) => {
   try {
-    const contacts = await contactsOperations.listContacts();
+    const contacts = await contactModel.listContacts();
     res.json({
       status: "success",
       code: 200,
@@ -23,7 +24,7 @@ router.get("/", async (req, res, next) => {
 });
 
 router.get("/:contactId", async (req, res, next) => {
-  const contact = await contactsOperations.getContactById(req.params.contactId);
+  const contact = await contactModel.getContactById(req.params.contactId);
   if (contact) {
     return res.json({ status: "success", code: 200, payload: { contact } });
   }
@@ -32,17 +33,21 @@ router.get("/:contactId", async (req, res, next) => {
     .json({ status: "error", code: 404, message: "Not Found" });
 });
 
-router.post("/", async (req, res, next) => {
-  const newContact = await contactsOperations.addContact(req.body);
+router.post("/", validateBody(schemaCreateContact), async (req, res, next) => {
+  const newContact = await contactModel.addContact(req.body);
   res
     .status(201)
     .json({ status: "success", code: 201, payload: { newContact } });
 });
 
 router.delete("/:contactId", async (req, res, next) => {
-  const contact = await contactsOperations.removeContact(req.params.contactId);
+  const contact = await contactModel.removeContact(req.params.contactId);
   if (contact) {
-    return res.json({ status: "success", code: 200, payload: { contact } });
+    return res.json({
+      status: "contact deleted",
+      code: 200,
+      payload: { contact },
+    });
   }
   return res
     .status(404)
@@ -50,7 +55,7 @@ router.delete("/:contactId", async (req, res, next) => {
 });
 
 router.put("/:contactId", async (req, res, next) => {
-  const contact = await contactsOperations.updateContact(
+  const contact = await contactModel.updateContact(
     req.params.contactId,
     req.body
   );
