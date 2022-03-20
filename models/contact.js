@@ -1,6 +1,7 @@
 const { randomUUID } = require("crypto");
 const DB = require("./db");
-const db = new DB("contacts.json");
+// const db = new DB("contacts.json");
+const db = new DB(process.env.DB_URL);
 
 const listContacts = async () => {
   return await db.read();
