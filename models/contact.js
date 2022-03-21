@@ -1,7 +1,21 @@
 const { randomUUID } = require("crypto");
 const DB = require("./db");
-// const db = new DB("contacts.json");
-const db = new DB(process.env.DB_URL);
+const db = new DB("contacts.json");
+// const db = new DB(process.env.DB_HOST);
+// const mongoose = require("mongoose");
+// const dotenv = require("dotenv");
+// const DB_HOST =
+//   "mongodb+srv://goit37:goit37@cluster0.qid3b.mongodb.net/db-contacts?retryWrites=true&w=majority";
+
+// dotenv();
+
+// mongoose
+//   .connect(DB_HOST)
+//   .then(() => console.log("Database connected!"))
+//   .catch((err) => {
+//     console.log(err.message);
+//     process.exit(1);
+//   });
 
 const listContacts = async () => {
   return await db.read();
