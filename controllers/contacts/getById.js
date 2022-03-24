@@ -1,13 +1,21 @@
 const { Contact } = require("../../models");
 
 const getById = async (req, res) => {
-  const contact = await Contact.getContactById(req.params.contactId);
+  const { id } = req.params;
+  const contact = await Contact.findById(id);
+  console.log(contact);
   if (contact) {
-    return res.json({ status: "success", code: 200, payload: { contact } });
-  }
-  return res
-    .status(404)
-    .json({ status: "error", code: 404, message: "Not Found" });
+    res.json({
+      status: "success",
+      code: 200,
+      payload: { contact },
+    });
+  } else
+    res.status(404).json({
+      status: "error",
+      code: 404,
+      message: "Not Found",
+    });
 };
 
 module.exports = getById;
