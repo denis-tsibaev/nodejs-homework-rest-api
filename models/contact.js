@@ -1,54 +1,46 @@
-const { randomUUID } = require("crypto");
-const DB = require("./db");
-const db = new DB("contacts.json");
+const { Schema, model } = require("mongoose");
+const Joi = require("joi");
 
-const listContacts = async () => {
-  return await db.read();
-};
+const contactSchema = Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Set name for contact"],
+      //   minlength: 2,
+      //   maxlength: 50,
+    },
+    phone: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { versionKey: false, timestamps: true }
+);
 
-const getContactById = async (contactId) => {
-  const contacts = await db.read();
-  const [contact] = contacts.filter((contact) => contact.id === contactId);
-  return contact;
-};
+const joiSchema = Joi.object({
+  name: Joi.string().required().messages({
+    "any.required": "Поле name обязательное",
+    "string.empty": "Поле name не может быть пустым",
+  }),
+  email: Joi.string().required(),
+  phone: Joi.string().required(),
+  favorite: Joi.bool(),
+});
 
-const removeContact = async (contactId) => {
-  const contacts = await db.read();
-  const index = contacts.findIndex((contact) => contact.id === contactId);
-  if (index !== -1) {
-    const [contact] = contacts.splice(index, 1);
-    await db.write(contacts);
-    return contact;
-  }
-  return null;
-};
+const favoriteJoiSchema = Joi.object({
+  favorite: Joi.bool().required(),
+});
 
-const addContact = async (body) => {
-  const contacts = await db.read();
-  const newContact = {
-    id: randomUUID(),
-    ...body,
-  };
-  contacts.push(newContact);
-  await db.write(contacts);
-  return newContact;
-};
-
-const updateContact = async (contactId, body) => {
-  const contacts = await db.read();
-  const index = contacts.findIndex((contact) => contact.id === contactId);
-  if (index !== -1) {
-    contacts[index] = { ...contacts[index], ...body };
-    await db.write(contacts);
-    return contacts[index];
-  }
-  return null;
-};
+const Contact = model("contact", contactSchema);
 
 module.exports = {
-  listContacts,
-  getContactById,
-  removeContact,
-  addContact,
-  updateContact,
+  Contact,
+  joiSchema,
+  favoriteJoiSchema,
 };
