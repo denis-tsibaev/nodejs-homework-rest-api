@@ -10,6 +10,7 @@ const register = async (req, res) => {
   const result = await User.create({ name, email, password });
   res.status(201).json({
     status: "success",
+    code: 201,
     data: {
       user: {
         email,
