@@ -12,4 +12,7 @@ router.post(
   ctrlWrapper(ctrl.register)
 );
 
+// можно как в дз router.post("/signin")
+router.post("/login", validation(joiLoginSchema), ctrlWrapper(ctrl.login));
+
 module.exports = router;
