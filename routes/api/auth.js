@@ -1,5 +1,5 @@
 const express = require("express");
-const { validation, ctrlWrapper } = require("../../middlewares");
+const { auth, validation, ctrlWrapper } = require("../../middlewares");
 const { auth: ctrl } = require("../../controllers");
 const { joiRegisterSchema, joiLoginSchema } = require("../../models/user");
 
@@ -14,5 +14,6 @@ router.post(
 
 // можно как в дз router.post("/signin")
 router.post("/login", validation(joiLoginSchema), ctrlWrapper(ctrl.login));
+router.post("/logout", auth, ctrlWrapper(ctrl.logout));
 
 module.exports = router;
