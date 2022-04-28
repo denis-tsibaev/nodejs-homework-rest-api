@@ -10,8 +10,8 @@ router.get("/current", auth, ctrlWrapper(ctrl.getCurrent));
 router.patch(
   "/users/avatars",
   auth,
-  upload.single("image"),
-  ctrlWrapper(ctrl.getCurrent)
+  upload.single("image")
+  //   ctrlWrapper(ctrl.getCurrent)
 );
 
 module.exports = router;
