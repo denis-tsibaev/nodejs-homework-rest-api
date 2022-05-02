@@ -11,13 +11,13 @@ const updateImg = async (req, res) => {
   const uploadPath = path.join(avatarsDir, "John5", originalname);
   try {
     await fs.rename(tempPath, uploadPath);
-    const imagePath = `/public/avatars/${"John5"}/${originalname}`;
-    User.findByIdAndUpdate("id", { imagePath });
+    const avatarURL = `/public/avatars/John5/${originalname}`;
+    await User.findByIdAndUpdate("626fb8cf2cee1d4c2a2b9982", { avatarURL });
     res.json({
       status: "success",
       code: 200,
       data: {
-        result: imagePath,
+        result: avatarURL,
       },
     });
   } catch (error) {
