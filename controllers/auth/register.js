@@ -1,3 +1,6 @@
+const fs = require("fs/promises");
+const path = require("path");
+
 const { Conflict } = require("http-errors");
 // const bcrypt = require("bcryptjs");
 
@@ -36,6 +39,11 @@ newUser={
 
   //   const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(6));
   //   const result = await User.create({ name, email, password: hashPassword });
+
+  const avatarsDir = path.join(__dirname, "../../", "public/avatars");
+  const dirPath = path.join(avatarsDir, name);
+  await fs.mkdir(dirPath);
+
   res.status(201).json({
     status: "success",
     code: 201,

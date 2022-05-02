@@ -8,10 +8,10 @@ const router = express.Router();
 router.get("/current", auth, ctrlWrapper(ctrl.getCurrent));
 
 router.patch(
-  "/users/avatars",
+  "/avatars",
   auth,
-  upload.single("image")
-  //   ctrlWrapper(ctrl.getCurrent)
+  upload.single("image"),
+  ctrlWrapper(ctrl.updateImg)
 );
 
 module.exports = router;
