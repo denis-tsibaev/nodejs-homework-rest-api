@@ -8,7 +8,7 @@ const router = express.Router();
 router.get("/current", auth, ctrlWrapper(ctrl.getCurrent));
 
 router.patch(
-  "/avatars",
+  "/avatar",
   auth,
   upload.single("image"),
   ctrlWrapper(ctrl.updateImg)
