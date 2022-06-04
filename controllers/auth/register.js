@@ -13,7 +13,7 @@ const register = async (req, res) => {
     throw new Conflict(`User with ${email} already exists`);
   }
 
-  const newUser = new User({ name, email });
+  const newUser = new User({ name, email, avatar: User.avatar });
   /*
 newUser={
 	name,
@@ -51,6 +51,7 @@ newUser={
       user: {
         email,
         name,
+        avatar: User.avatar,
       },
     },
   });
